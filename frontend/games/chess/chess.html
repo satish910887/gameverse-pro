@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Chess Master</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e1a;color:#e8edf5;font-family:Inter,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:16px}
+.header{display:flex;gap:16px;margin-bottom:16px;background:#111827;padding:12px 24px;border-radius:12px}
+canvas{border-radius:8px;box-shadow:0 0 30px rgba(124,58,237,.3);cursor:pointer;max-width:100%}
+.chess-wrap{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+.chess-panel{background:#111827;border-radius:12px;padding:20px;min-width:160px;display:flex;flex-direction:column;gap:12px}
+#statusMsg{font-weight:700;font-size:.92rem;padding:10px;background:#1a2236;border-radius:8px;text-align:center}
+#moveLog{font-family:monospace;font-size:.72rem;color:#6B7280;height:160px;overflow-y:auto;background:#0a0e1a;border-radius:8px;padding:8px}
+.btn{background:linear-gradient(135deg,#7C3AED,#00F5FF);color:#fff;border:none;padding:10px 20px;border-radius:20px;font-weight:700;cursor:pointer;font-size:.85rem;margin-top:4px}
+.captured{font-size:1rem;min-height:22px;letter-spacing:2px;text-align:center}
+</style>
+</head>
+<body>
+<div class="header">
+  <span style="font-weight:700">♟️ Chess Master</span>
+  <span id="modeLabel" style="background:#1a2236;padding:6px 14px;border-radius:20px;font-size:.85rem">AI — Easy</span>
+  <span style="font-size:.85rem">Moves: <span id="moveCount" style="color:#00F5FF;font-weight:700">0</span></span>
+</div>
+<div class="chess-wrap">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+    <div class="captured" id="capturedBlack"></div>
+    <canvas id="chessCanvas" width="360" height="360"></canvas>
+    <div class="captured" id="capturedWhite"></div>
+  </div>
+  <div class="chess-panel">
+    <div id="statusMsg">⬜ White's turn</div>
+    <div id="moveLog"></div>
+    <button class="btn" onclick="restartGame()">🔄 New Game</button>
+    <button class="btn" onclick="undoMove()" style="background:#1a2236">↩ Undo</button>
+  </div>
+</div>
+<script src="chess.js"></script>
+</body>
+</html>
