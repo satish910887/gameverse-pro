@@ -1,636 +1,165 @@
-/* ======================================
-   GameVerse Pro - Ludo
-   Part 1
-====================================== */
+const canvas=document.getElementById('ludoCanvas');
+const ctx=canvas.getContext('2d');
+const S=canvas.width,C=S/15;
+const COLORS={red:'#FF4757',blue:'#2196F3'};
+let state={cp:0,dice:0,rolled:false,gameOver:false,
+  pieces:{red:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},
+  score:{red:0,blue:0}};
+const mode=new URLSearchParams(location.search).get('mode')||'ai';
 
-GameBridge.init("ludo");
-
-const canvas = document.getElementById("boardCanvas");
-const ctx = canvas.getContext("2d");
-
-const BOARD_SIZE = 700;
-const CELL_SIZE = BOARD_SIZE / 15;
-
-let currentPlayer = 0;
-let diceValue = 0;
-let gameStarted = false;
-
-/* ===========================
-   Players
-=========================== */
-
-const players = [
-
-{
-
-name:"Red",
-
-color:"#EF4444",
-
-startIndex:0,
-
-tokens:[
-
-{x:1,y:1,step:-1,home:true},
-
-{x:3,y:1,step:-1,home:true},
-
-{x:1,y:3,step:-1,home:true},
-
-{x:3,y:3,step:-1,home:true}
-
-]
-
-},
-
-{
-
-name:"Green",
-
-color:"#22C55E",
-
-startIndex:13,
-
-tokens:[
-
-{x:11,y:1,step:-1,home:true},
-
-{x:13,y:1,step:-1,home:true},
-
-{x:11,y:3,step:-1,home:true},
-
-{x:13,y:3,step:-1,home:true}
-
-]
-
-},
-
-{
-
-name:"Yellow",
-
-color:"#FACC15",
-
-startIndex:26,
-
-tokens:[
-
-{x:11,y:11,step:-1,home:true},
-
-{x:13,y:11,step:-1,home:true},
-
-{x:11,y:13,step:-1,home:true},
-
-{x:13,y:13,step:-1,home:true}
-
-]
-
-},
-
-{
-
-name:"Blue",
-
-color:"#3B82F6",
-
-startIndex:39,
-
-tokens:[
-
-{x:1,y:11,step:-1,home:true},
-
-{x:3,y:11,step:-1,home:true},
-
-{x:1,y:13,step:-1,home:true},
-
-{x:3,y:13,step:-1,home:true}
-
-]
-
+function draw(){
+  ctx.clearRect(0,0,S,S);
+  ctx.fillStyle='#1a2236';ctx.fillRect(0,0,S,S);
+  // Home zones
+  [{c:'#FF475733',x:0,y:0},{c:'#2196F333',x:9*C,y:0},
+   {c:'#00E67633',x:9*C,y:9*C},{c:'#FFD70033',x:0,y:9*C}]
+  .forEach(z=>{ctx.fillStyle=z.c;ctx.fillRect(z.x,z.y,6*C,6*C);});
+  // Center
+  ctx.fillStyle='#7C3AED';
+  ctx.beginPath();ctx.moveTo(6*C,6*C);ctx.lineTo(9*C,7.5*C);ctx.lineTo(6*C,9*C);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#2196F3';
+  ctx.beginPath();ctx.moveTo(9*C,6*C);ctx.lineTo(7.5*C,7.5*C);ctx.lineTo(9*C,9*C);ctx.closePath();ctx.fill();
+  // Grid
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=0.5;
+  for(let i=0;i<=15;i++){
+    ctx.beginPath();ctx.moveTo(i*C,0);ctx.lineTo(i*C,S);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,i*C);ctx.lineTo(S,i*C);ctx.stroke();
+  }
+  drawPieces();
 }
 
-];
+const HOME={
+  red:[[1,1],[4,1],[1,4],[4,4]],
+  blue:[[10,1],[13,1],[10,4],[13,4]]
+};
 
-/* ===========================
-   Board Path
-=========================== */
-
-const PATH=[];
-
-function createPath(){
-
-// Top
-
-for(let x=6;x>=0;x--)
-
-PATH.push({x,y:0});
-
-for(let y=1;y<=5;y++)
-
-PATH.push({x:0,y});
-
-for(let x=1;x<=5;x++)
-
-PATH.push({x,y:6});
-
-// Right
-
-for(let y=5;y>=0;y--)
-
-PATH.push({x:6,y});
-
-for(let x=7;x<=14;x++)
-
-PATH.push({x,y:0});
-
-for(let y=1;y<=6;y++)
-
-PATH.push({x:14,y});
-
-// Bottom
-
-for(let y=7;y<=14;y++)
-
-PATH.push({x:14,y});
-
-for(let x=13;x>=8;x--)
-
-PATH.push({x,y:14});
-
-for(let y=13;y>=8;y--)
-
-PATH.push({x:8,y});
-
-// Left
-
-for(let x=7;x>=0;x--)
-
-PATH.push({x,y:14});
-
-for(let y=13;y>=8;y--)
-
-PATH.push({x:0,y});
-
+function getPiecePos(color,i){
+  const p=state.pieces[color][i];
+  if(p===-1){const h=HOME[color][i];return{x:(h[0]+.5)*C,y:(h[1]+.5)*C};}
+  if(p>=52)return{x:7.5*C,y:7.5*C};
+  const path=getPath(color);
+  return path[p%path.length]||{x:7.5*C,y:7.5*C};
 }
 
-/* ===========================
-   Draw Cell
-=========================== */
-
-function cell(x,y,color){
-
-ctx.fillStyle=color;
-
-ctx.fillRect(
-
-x*CELL_SIZE,
-
-y*CELL_SIZE,
-
-CELL_SIZE,
-
-CELL_SIZE
-
-);
-
-ctx.strokeStyle="#ddd";
-
-ctx.strokeRect(
-
-x*CELL_SIZE,
-
-y*CELL_SIZE,
-
-CELL_SIZE,
-
-CELL_SIZE
-
-);
-
+function getPath(color){
+  const path=[];
+  if(color==='red'){
+    for(let c=6;c<=14;c++)path.push({x:(c+.5)*C,y:13.5*C});
+    for(let r=14;r>=9;r--)path.push({x:.5*C,y:(r+.5)*C});
+    for(let r=13;r>=9;r--)path.push({x:.5*C,y:(r+.5)*C});
+    for(let c=1;c<=5;c++)path.push({x:(c+.5)*C,y:9.5*C});
+    for(let r=8;r>=0;r--)path.push({x:5.5*C,y:(r+.5)*C});
+    for(let c=6;c<=14;c++)path.push({x:(c+.5)*C,y:.5*C});
+    for(let r=1;r<=5;r++)path.push({x:14.5*C,y:(r+.5)*C});
+    for(let c=13;c>=9;c--)path.push({x:(c+.5)*C,y:5.5*C});
+    for(let r=6;r<=13;r++)path.push({x:9.5*C,y:(r+.5)*C});
+  }else{
+    for(let r=6;r<=14;r++)path.push({x:1.5*C,y:(r+.5)*C});
+    for(let c=1;c<=5;c++)path.push({x:(c+.5)*C,y:14.5*C});
+    for(let c=6;c<=14;c++)path.push({x:(c+.5)*C,y:14.5*C});
+    for(let r=13;r>=9;r--)path.push({x:14.5*C,y:(r+.5)*C});
+    for(let c=13;c>=9;c--)path.push({x:(c+.5)*C,y:9.5*C});
+    for(let r=8;r>=0;r--)path.push({x:9.5*C,y:(r+.5)*C});
+    for(let c=8;c>=0;c--)path.push({x:(c+.5)*C,y:.5*C});
+    for(let r=1;r<=5;r++)path.push({x:.5*C,y:(r+.5)*C});
+    for(let c=1;c<=5;c++)path.push({x:(c+.5)*C,y:5.5*C});
+  }
+  while(path.length<52)path.push({x:7.5*C,y:7.5*C});
+  return path;
 }
 
-/* ===========================
-   Draw Board
-=========================== */
-
-function drawBoard(){
-
-ctx.clearRect(0,0,700,700);
-
-// Background
-
-ctx.fillStyle="#fff";
-
-ctx.fillRect(0,0,700,700);
-
-// Red
-
-ctx.fillStyle="#EF4444";
-
-ctx.fillRect(0,0,280,280);
-
-// Green
-
-ctx.fillStyle="#22C55E";
-
-ctx.fillRect(420,0,280,280);
-
-// Yellow
-
-ctx.fillStyle="#FACC15";
-
-ctx.fillRect(420,420,280,280);
-
-// Blue
-
-ctx.fillStyle="#3B82F6";
-
-ctx.fillRect(0,420,280,280);
-
-}
-
-/* ===========================
-   Draw Tokens
-=========================== */
-
-function drawTokens(){
-
-players.forEach(player=>{
-
-ctx.fillStyle=player.color;
-
-player.tokens.forEach(token=>{
-
-ctx.beginPath();
-
-ctx.arc(
-
-token.x*CELL_SIZE+CELL_SIZE/2,
-
-token.y*CELL_SIZE+CELL_SIZE/2,
-
-18,
-
-0,
-
-Math.PI*2
-
-);
-
-ctx.fill();
-
-});
-
-});
-
-}
-
-/* ===========================
-   Render
-=========================== */
-
-function render(){
-
-drawBoard();
-
-drawTokens();
-
-requestAnimationFrame(render);
-
-}
-
-createPath();
-
-render();
-
-console.log("✅ Ludo Part 1 Loaded");/* ======================================
-   Ludo Part 2
-   Dice + Turn + Movement
-====================================== */
-
-const dice = document.getElementById("dice");
-const rollBtn = document.getElementById("rollDiceBtn");
-
-let canMove = false;
-let selectedToken = null;
-
-/* ===========================
-   Roll Dice
-=========================== */
-
-rollBtn.addEventListener("click", () => {
-
-    if (canMove) return;
-
-    dice.classList.add("roll");
-
-    setTimeout(() => {
-
-        dice.classList.remove("roll");
-
-        diceValue = Math.floor(Math.random() * 6) + 1;
-
-        dice.innerHTML = diceValue;
-
-        document.getElementById("turnText").innerHTML =
-            players[currentPlayer].name +
-            " rolled " +
-            diceValue;
-
-        canMove = true;
-
-    }, 700);
-
-});
-
-/* ===========================
-   Mouse Click
-=========================== */
-
-canvas.addEventListener("click", (e) => {
-
-    if (!canMove) return;
-
-    const rect = canvas.getBoundingClientRect();
-
-    const mx = e.clientX - rect.left;
-
-    const my = e.clientY - rect.top;
-
-    const gx = Math.floor(mx / CELL_SIZE);
-
-    const gy = Math.floor(my / CELL_SIZE);
-
-    const player = players[currentPlayer];
-
-    player.tokens.forEach(token => {
-
-        if (token.x === gx && token.y === gy) {
-
-            selectedToken = token;
-
-            moveToken(token);
-
-        }
-
+function drawPieces(){
+  ['red','blue'].forEach(color=>{
+    state.pieces[color].forEach((p,i)=>{
+      const pos=getPiecePos(color,i);
+      ctx.beginPath();ctx.arc(pos.x,pos.y,C*.38,0,Math.PI*2);
+      ctx.fillStyle=COLORS[color];ctx.fill();
+      ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+      ctx.fillStyle='#fff';ctx.font=`bold ${C*.3}px Inter`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(i+1,pos.x,pos.y);
     });
-
-});
-
-/* ===========================
-   Move Token
-=========================== */
-
-function moveToken(token){
-
-    if(diceValue!==6 && token.home){
-
-        nextTurn();
-
-        return;
-
-    }
-
-    if(token.home){
-
-        token.home=false;
-
-        token.step=0;
-
-    }
-
-    token.step+=diceValue;
-
-    if(token.step>=PATH.length){
-
-        token.step=PATH.length-1;
-
-    }
-
-    const pos=PATH[token.step];
-
-    token.x=pos.x;
-
-    token.y=pos.y;
-
-    GameBridge.addScore(10);
-
-    canMove=false;
-
-    if(diceValue!==6){
-
-        nextTurn();
-
-    }
-
+  });
 }
 
-/* ===========================
-   Turn
-=========================== */
+function rollDice(){
+  if(state.rolled||state.gameOver)return;
+  const d=document.getElementById('dice');
+  d.style.animation='none';
+  setTimeout(()=>{
+    state.dice=Math.floor(Math.random()*6)+1;
+    const f=['⚀','⚁','⚂','⚃','⚄','⚅'];
+    d.textContent=f[state.dice-1];
+    document.getElementById('diceResult').textContent='Rolled: '+state.dice;
+    state.rolled=true;
+    handleTurn();
+  },200);
+}
+
+function handleTurn(){
+  const pl=['red','blue'][state.cp];
+  const movable=state.pieces[pl].map((p,i)=>({i,p})).filter(({p})=>{
+    if(p===-1)return state.dice===6;
+    if(p>=52)return false;
+    return p+state.dice<=52;
+  });
+  if(!movable.length){setStatus('No moves! Skipping...');setTimeout(nextTurn,1000);return;}
+  if(mode==='ai'&&state.cp===1){
+    setTimeout(()=>movePiece(pl,movable[movable.length-1].i),700);
+  }else{
+    setStatus(pl.toUpperCase()+': Tap a piece');
+    canvas.onclick=e=>{
+      const r=canvas.getBoundingClientRect();
+      const mx=(e.clientX-r.left)*(S/r.width);
+      const my=(e.clientY-r.top)*(S/r.height);
+      movable.forEach(({i})=>{
+        const pos=getPiecePos(pl,i);
+        const dx=pos.x-mx,dy=pos.y-my;
+        if(Math.sqrt(dx*dx+dy*dy)<C*.45){canvas.onclick=null;movePiece(pl,i);}
+      });
+    };
+  }
+}
+
+function movePiece(pl,i){
+  if(state.pieces[pl][i]===-1)state.pieces[pl][i]=0;
+  else state.pieces[pl][i]+=state.dice;
+  state.score[pl]+=state.dice*10;
+  document.getElementById('score').textContent=state.score[['red','blue'][0]];
+  if(state.pieces[pl].filter(p=>p>=52).length===4){endGame(pl);return;}
+  draw();
+  state.rolled=false;
+  if(state.dice!==6)nextTurn();
+  else setStatus('🎉 Roll again!');
+}
 
 function nextTurn(){
-
-    currentPlayer++;
-
-    if(currentPlayer>=players.length){
-
-        currentPlayer=0;
-
-    }
-
-    document.getElementById("turnText").innerHTML=
-
-    players[currentPlayer].name+
-
-    "'s Turn";
-
+  state.cp=1-state.cp;
+  const pl=['red','blue'][state.cp];
+  document.getElementById('turnDisplay').textContent=pl.charAt(0).toUpperCase()+pl.slice(1);
+  document.getElementById('turnIndicator').textContent=pl==='red'?'🔴 Red\'s Turn':'🔵 Blue\'s Turn';
+  document.getElementById('dice').textContent='🎲';
+  document.getElementById('diceResult').textContent='Click to roll';
+  state.rolled=false;setStatus('');draw();
+  if(mode==='ai'&&state.cp===1)setTimeout(rollDice,600);
 }
 
-/* ===========================
-   Update Score
-=========================== */
-
-function updateCoins(){
-
-    document.getElementById("coinCount").innerHTML=
-
-    GameBridge.getScore();
-
+function endGame(winner){
+  state.gameOver=true;
+  setStatus('🏆 '+winner.toUpperCase()+' WINS!');draw();
+  window.parent?.postMessage({type:'GAME_OVER',score:state.score[winner],result:winner==='red'?'win':'loss'},'*');
 }
 
-setInterval(updateCoins,200);
-
-console.log("✅ Ludo Part 2 Loaded");/* ======================================
-   Ludo Part 3
-   Safe Zone + Kill + Win
-====================================== */
-
-const SAFE_ZONES = [
-    0, 8, 13, 21, 26, 34, 39, 47
-];
-
-/* ===========================
-   Safe Zone
-=========================== */
-
-function isSafe(step) {
-    return SAFE_ZONES.includes(step);
+function restartGame(){
+  state={cp:0,dice:0,rolled:false,gameOver:false,
+    pieces:{red:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},score:{red:0,blue:0}};
+  document.getElementById('dice').textContent='🎲';
+  document.getElementById('diceResult').textContent='Click to roll';
+  document.getElementById('score').textContent='0';
+  document.getElementById('turnDisplay').textContent='Red';
+  document.getElementById('turnIndicator').textContent='🔴 Red\'s Turn';
+  setStatus('');draw();
 }
 
-/* ===========================
-   Kill Opponent
-=========================== */
-
-function checkKill(activePlayer, token) {
-
-    players.forEach((player, playerIndex) => {
-
-        if (playerIndex === activePlayer) return;
-
-        player.tokens.forEach(enemy => {
-
-            if (enemy.home) return;
-
-            if (
-                enemy.step === token.step &&
-                !isSafe(token.step)
-            ) {
-
-                enemy.home = true;
-                enemy.step = -1;
-
-                resetToken(enemy, playerIndex);
-
-                GameBridge.addScore(50);
-
-                showMessage(
-                    players[activePlayer].name +
-                    " captured a token!"
-                );
-
-            }
-
-        });
-
-    });
-
-}
-
-/* ===========================
-   Reset Token
-=========================== */
-
-function resetToken(token, playerIndex) {
-
-    const HOME = {
-
-        0: [
-            {x:1,y:1},
-            {x:3,y:1},
-            {x:1,y:3},
-            {x:3,y:3}
-        ],
-
-        1: [
-            {x:11,y:1},
-            {x:13,y:1},
-            {x:11,y:/* ======================================
-   Ludo Part 4
-   Socket.io Multiplayer
-====================================== */
-
-const socket = io();
-
-let roomId = null;
-
-/* ===========================
-   Join Room
-=========================== */
-
-function joinRoom(room){
-
-    roomId = room;
-
-    socket.emit("join_room",{
-
-        roomId
-
-    });
-
-}
-
-socket.on("game_start",(data)=>{
-
-    roomId = data.roomId;
-
-    currentPlayer = data.turn;
-
-    document.getElementById("turnText").innerHTML =
-    "Game Started";
-
-});
-
-/* ===========================
-   Roll Dice Sync
-=========================== */
-
-function syncDice(value){
-
-    socket.emit("roll_dice",{
-
-        roomId,
-
-        value
-
-    });
-
-}
-
-socket.on("dice_result",(data)=>{
-
-    diceValue = data.value;
-
-    dice.innerHTML = diceValue;
-
-});
-
-/* ===========================
-   Move Sync
-=========================== */
-
-function syncMove(player,token,step){
-
-    socket.emit("move_piece",{
-
-        roomId,
-
-        player,
-
-        token,
-
-        step
-
-    });
-
-}
-
-socket.on("piece_moved",(data)=>{
-
-    const t = players[data.player].tokens[data.token];
-
-    t.step = data.step;
-
-    const pos = PATH[data.step];
-
-    t.x = pos.x;
-
-    t.y = pos.y;
-
-});
-
-/* ===========================
-   Turn Change
-=========================== */
-
-socket.on("
+function setStatus(m){document.getElementById('statusMsg').textContent=m;}
+draw();
