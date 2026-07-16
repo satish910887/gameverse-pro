@@ -1,0 +1,805 @@
+/* ==========================================================
+   GAMEVERSE PRO HERO
+   PART 1 / 4
+========================================================== */
+
+.hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:120px 8%;
+    background:
+        radial-gradient(circle at top left,#7c3aed22,transparent 45%),
+        radial-gradient(circle at bottom right,#2563eb22,transparent 40%),
+        linear-gradient(135deg,#060913 0%,#0b1220 40%,#111827 100%);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:-20%;
+    background:
+        radial-gradient(circle,#7c3aed33 0%,transparent 60%);
+    filter:blur(80px);
+    animation:heroBlobOne 14s ease-in-out infinite;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:700px;
+    height:700px;
+    right:-220px;
+    bottom:-220px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle,#06b6d444 0%,transparent 70%);
+    filter:blur(100px);
+    animation:heroBlobTwo 18s linear infinite;
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            rgba(0,0,0,.15),
+            rgba(0,0,0,.55)
+        );
+    z-index:1;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:1300px;
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 22px;
+    margin-bottom:28px;
+
+    color:#fff;
+
+    background:
+        rgba(255,255,255,.08);
+
+    border:1px solid
+        rgba(255,255,255,.15);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:999px;
+
+    font-size:.95rem;
+    font-weight:600;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.25);
+}
+
+.hero h1{
+
+    font-family:"Orbitron",sans-serif;
+
+    font-size:clamp(3rem,7vw,6.5rem);
+
+    line-height:1.05;
+
+    color:#fff;
+
+    max-width:900px;
+
+    margin-bottom:28px;
+
+    text-shadow:
+        0 0 25px rgba(124,58,237,.35);
+
+}
+
+.hero h1 .gradient{
+
+    background:
+        linear-gradient(
+            90deg,
+            #7C3AED,
+            #06B6D4,
+            #60A5FA
+        );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+}
+
+.hero p{
+
+    max-width:720px;
+
+    color:#cbd5e1;
+
+    font-size:1.2rem;
+
+    line-height:1.9;
+
+    margin-bottom:40px;
+
+}
+
+@keyframes heroBlobOne{
+
+    0%{
+
+        transform:
+        translate(0,0)
+        scale(1);
+
+    }
+
+    50%{
+
+        transform:
+        translate(120px,-60px)
+        scale(1.2);
+
+    }
+
+    100%{
+
+        transform:
+        translate(0,0)
+        scale(1);
+
+    }
+
+}
+
+@keyframes heroBlobTwo{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+/* ==========================================================
+   GAMEVERSE PRO HERO
+   PART 2 / 4
+========================================================== */
+
+.hero-buttons{
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+
+    margin-bottom:60px;
+
+}
+
+.btn-primary,
+.btn-secondary{
+
+    position:relative;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    min-width:190px;
+
+    height:60px;
+
+    padding:0 34px;
+
+    border-radius:18px;
+
+    font-size:16px;
+    font-weight:700;
+
+    overflow:hidden;
+
+    transition:.35s ease;
+
+}
+
+.btn-primary{
+
+    color:#fff;
+
+    background:
+    linear-gradient(
+        135deg,
+        #7C3AED,
+        #2563EB
+    );
+
+    box-shadow:
+    0 18px 40px
+    rgba(124,58,237,.35);
+
+}
+
+.btn-primary:hover{
+
+    transform:
+    translateY(-6px);
+
+    box-shadow:
+    0 25px 60px
+    rgba(124,58,237,.50);
+
+}
+
+.btn-primary::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-120%;
+
+    width:80%;
+    height:100%;
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        transparent,
+
+        rgba(255,255,255,.35),
+
+        transparent
+
+    );
+
+    transform:skewX(-25deg);
+
+    transition:.7s;
+
+}
+
+.btn-primary:hover::before{
+
+    left:130%;
+
+}
+
+.btn-secondary{
+
+    color:#fff;
+
+    background:
+
+    rgba(255,255,255,.08);
+
+    border:1px solid
+    rgba(255,255,255,.15);
+
+    backdrop-filter:blur(20px);
+
+}
+
+.btn-secondary:hover{
+
+    background:
+    rgba(255,255,255,.12);
+
+    transform:
+    translateY(-6px);
+
+    border-color:
+    rgba(124,58,237,.45);
+
+}
+
+.hero-buttons button{
+
+    cursor:pointer;
+
+}
+
+.hero-content{
+
+    animation:
+    heroContent .9s ease;
+
+}
+
+@keyframes heroContent{
+
+    from{
+
+        opacity:0;
+
+        transform:
+        translateY(60px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+
+    }
+
+}
+
+.hero::before,
+.hero::after{
+
+    pointer-events:none;
+
+                      }
+/* ==========================================================
+   GAMEVERSE PRO HERO
+   PART 3 / 4
+========================================================== */
+
+.hero-stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,minmax(180px,1fr));
+
+    gap:24px;
+
+    margin-top:30px;
+
+}
+
+.hero-stats div{
+
+    position:relative;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    background:
+    rgba(255,255,255,.06);
+
+    border:1px solid
+    rgba(255,255,255,.10);
+
+    backdrop-filter:blur(22px);
+
+    transition:.4s ease;
+
+    box-shadow:
+    0 18px 45px rgba(0,0,0,.25);
+
+}
+
+.hero-stats div::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        rgba(124,58,237,.20),
+
+        rgba(37,99,235,.08)
+
+    );
+
+    opacity:0;
+
+    transition:.4s;
+
+}
+
+.hero-stats div:hover{
+
+    transform:
+    translateY(-12px);
+
+    border-color:
+    rgba(124,58,237,.45);
+
+    box-shadow:
+
+    0 28px 60px
+
+    rgba(124,58,237,.22);
+
+}
+
+.hero-stats div:hover::before{
+
+    opacity:1;
+
+}
+
+.hero-stats h2{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:2.3rem;
+
+    font-weight:800;
+
+    margin-bottom:8px;
+
+    font-family:"Orbitron",sans-serif;
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        #7C3AED,
+
+        #06B6D4
+
+    );
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+.hero-stats span{
+
+    position:relative;
+
+    z-index:2;
+
+    color:#CBD5E1;
+
+    font-size:.95rem;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+}
+
+.hero-stats div:nth-child(1){
+
+    animation:statFloat 6s ease-in-out infinite;
+
+}
+
+.hero-stats div:nth-child(2){
+
+    animation:statFloat 7s ease-in-out infinite;
+
+}
+
+.hero-stats div:nth-child(3){
+
+    animation:statFloat 8s ease-in-out infinite;
+
+}
+
+.hero-stats div:nth-child(4){
+
+    animation:statFloat 9s ease-in-out infinite;
+
+}
+
+@keyframes statFloat{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.hero-badge{
+
+    animation:
+    badgeGlow 3s infinite alternate;
+
+}
+
+@keyframes badgeGlow{
+
+    from{
+
+        box-shadow:
+        0 0 15px rgba(124,58,237,.20);
+
+    }
+
+    to{
+
+        box-shadow:
+        0 0 35px rgba(124,58,237,.45);
+
+    }
+
+}
+/* ==========================================================
+   GAMEVERSE PRO HERO
+   PART 4 / 4
+========================================================== */
+
+/* Floating Mouse Glow */
+
+.hero-glow{
+
+    position:absolute;
+
+    width:350px;
+    height:350px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(124,58,237,.22),
+        transparent 70%
+    );
+
+    filter:blur(60px);
+
+    pointer-events:none;
+
+    animation:glowPulse 6s ease-in-out infinite;
+
+}
+
+@keyframes glowPulse{
+
+    0%{
+
+        transform:
+        scale(1);
+
+        opacity:.5;
+
+    }
+
+    50%{
+
+        transform:
+        scale(1.25);
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        transform:
+        scale(1);
+
+        opacity:.5;
+
+    }
+
+}
+
+/* Decorative Grid */
+
+.hero::selection{
+
+    background:#7C3AED;
+
+    color:#fff;
+
+}
+
+/* Better Text Rendering */
+
+.hero h1,
+.hero p,
+.hero-badge,
+.hero-stats{
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+/* Performance */
+
+.hero,
+.hero::before,
+.hero::after{
+
+    will-change:
+    transform;
+
+}
+
+/* Tablet */
+
+@media(max-width:992px){
+
+.hero{
+
+padding:120px 40px 80px;
+
+}
+
+.hero h1{
+
+font-size:4rem;
+
+}
+
+.hero p{
+
+font-size:1.05rem;
+
+}
+
+.hero-stats{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+.hero-buttons{
+
+justify-content:center;
+
+}
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.hero{
+
+text-align:center;
+
+padding:110px 24px 70px;
+
+}
+
+.hero-content{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+}
+
+.hero h1{
+
+font-size:2.9rem;
+
+}
+
+.hero p{
+
+font-size:1rem;
+
+line-height:1.8;
+
+}
+
+.hero-buttons{
+
+width:100%;
+
+flex-direction:column;
+
+}
+
+.btn-primary,
+.btn-secondary{
+
+width:100%;
+
+max-width:320px;
+
+}
+
+.hero-stats{
+
+grid-template-columns:1fr;
+
+width:100%;
+
+}
+
+.hero-stats div{
+
+padding:24px;
+
+}
+
+}
+
+/* Small Mobile */
+
+@media(max-width:480px){
+
+.hero{
+
+padding-top:100px;
+
+}
+
+.hero h1{
+
+font-size:2.3rem;
+
+}
+
+.hero-badge{
+
+font-size:.8rem;
+
+padding:10px 18px;
+
+}
+
+.hero p{
+
+font-size:.95rem;
+
+}
+
+.hero-stats h2{
+
+font-size:2rem;
+
+}
+
+}
+
+/* End Hero */

@@ -1,0 +1,245 @@
+/* ======================================
+   GameVerse Pro - Runner Game
+====================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+background:#0F172A;
+
+font-family:Poppins,Arial,sans-serif;
+
+color:#fff;
+
+overflow:hidden;
+
+}
+
+.game-container{
+
+width:100vw;
+height:100vh;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+
+padding:20px;
+
+}
+
+/* Top Bar */
+
+.top-bar{
+
+width:100%;
+max-width:950px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+background:#1E293B;
+
+padding:15px 25px;
+
+border-radius:15px;
+
+margin-bottom:20px;
+
+}
+
+.top-bar h1{
+
+font-size:28px;
+
+}
+
+#gameStatus{
+
+background:#22C55E;
+
+padding:8px 18px;
+
+border-radius:10px;
+
+font-weight:bold;
+
+}
+
+/* Canvas */
+
+#gameCanvas{
+
+width:900px;
+height:450px;
+
+max-width:95vw;
+
+background:linear-gradient(
+180deg,
+#38BDF8 0%,
+#7DD3FC 45%,
+#4ADE80 46%,
+#15803D 100%
+);
+
+border-radius:15px;
+
+border:4px solid #111827;
+
+box-shadow:
+0 10px 35px rgba(0,0,0,.4);
+
+}
+
+/* HUD */
+
+.hud{
+
+margin-top:20px;
+
+display:flex;
+
+gap:40px;
+
+font-size:20px;
+
+font-weight:bold;
+
+}
+
+.hud div{
+
+background:#1E293B;
+
+padding:12px 20px;
+
+border-radius:10px;
+
+min-width:140px;
+
+text-align:center;
+
+}
+
+/* Controls */
+
+.controls{
+
+margin-top:20px;
+
+display:flex;
+
+gap:15px;
+
+}
+
+.controls button{
+
+padding:12px 24px;
+
+background:#6C63FF;
+
+color:#fff;
+
+border:none;
+
+border-radius:10px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.controls button:hover{
+
+background:#4338CA;
+
+transform:translateY(-2px);
+
+}
+
+/* Instructions */
+
+.instructions{
+
+margin-top:25px;
+
+text-align:center;
+
+color:#CBD5E1;
+
+font-size:15px;
+
+line-height:1.8;
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.top-bar{
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.top-bar h1{
+
+font-size:22px;
+
+}
+
+#gameCanvas{
+
+width:95vw;
+height:250px;
+
+}
+
+.hud{
+
+flex-direction:column;
+
+gap:10px;
+
+width:100%;
+
+}
+
+.controls{
+
+flex-direction:column;
+
+width:100%;
+
+}
+
+.controls button{
+
+width:100%;
+
+}
+
+.instructions{
+
+font-size:14px;
+
+}
+
+  }

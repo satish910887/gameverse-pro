@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GameVerse Pro - Chess</title>
+
+<link rel="stylesheet" href="chess.css">
+
+</head>
+
+<body>
+
+<div class="game-container">
+
+<header class="top-bar">
+
+<h1>♟ Chess Multiplayer</h1>
+
+<div id="gameStatus">
+
+White's Turn
+
+</div>
+
+</header>
+
+<main>
+
+<div id="board">
+
+</div>
+
+</main>
+
+<section class="players">
+
+<div class="player white">
+
+⚪ White
+
+<span id="whitePlayer">
+
+Player 1
+
+</span>
+
+</div>
+
+<div class="player black">
+
+⚫ Black
+
+<span id="blackPlayer">
+
+Player 2
+
+</span>
+
+</div>
+
+</section>
+
+<section class="controls">
+
+<button id="restartBtn">
+
+Restart
+
+</button>
+
+<button id="exitBtn">
+
+Exit
+
+</button>
+
+</section>
+
+<section class="timers">
+
+<div>
+
+White Time
+
+<span id="whiteTimer">
+
+10:00
+
+</span>
+
+</div>
+
+<div>
+
+Black Time
+
+<span id="blackTimer">
+
+10:00
+
+</span>
+
+</div>
+
+</section>
+
+</div>
+
+<script src="../shared/gamebridge.js"></script>
+
+<script src="../shared/physics.js"></script>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="chess.js"></script>
+
+</body>
+
+</html>

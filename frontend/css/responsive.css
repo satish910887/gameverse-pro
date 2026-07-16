@@ -1,0 +1,654 @@
+/* ==========================================================
+   GAMEVERSE PRO RESPONSIVE
+   PART 1 / 4
+========================================================== */
+
+/* ==========================
+   4K & ULTRA WIDE
+========================== */
+
+@media (min-width:1920px){
+
+.container{
+
+max-width:1800px;
+
+margin:auto;
+
+}
+
+.games-grid{
+
+grid-template-columns:
+repeat(5,1fr);
+
+gap:40px;
+
+}
+
+.hero h1{
+
+font-size:6rem;
+
+}
+
+.hero p{
+
+font-size:1.5rem;
+
+max-width:900px;
+
+}
+
+.profile-card{
+
+max-width:550px;
+
+}
+
+}
+
+/* ==========================
+   DESKTOP
+========================== */
+
+@media (max-width:1600px){
+
+.container{
+
+max-width:1400px;
+
+}
+
+.games-grid{
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:32px;
+
+}
+
+.hero{
+
+padding:130px 7% 90px;
+
+}
+
+.hero h1{
+
+font-size:4.8rem;
+
+}
+
+}
+
+/* ==========================
+   LAPTOP
+========================== */
+
+@media (max-width:1400px){
+
+.games-grid{
+
+grid-template-columns:
+repeat(3,1fr);
+
+}
+
+.hero h1{
+
+font-size:4rem;
+
+}
+
+.hero p{
+
+font-size:20px;
+
+}
+
+.navbar{
+
+padding:16px 5%;
+
+}
+
+}
+/* ==========================================================
+   GAMEVERSE PRO RESPONSIVE
+   PART 2 / 4
+========================================================== */
+
+/* ==========================
+   TABLET LANDSCAPE
+========================== */
+
+@media (max-width:1200px){
+
+.container{
+
+width:94%;
+
+}
+
+.games-grid{
+
+grid-template-columns:
+repeat(2,1fr);
+
+gap:28px;
+
+}
+
+.hero{
+
+padding:120px 6% 80px;
+
+}
+
+.hero h1{
+
+font-size:3.5rem;
+
+}
+
+.hero p{
+
+font-size:18px;
+
+max-width:650px;
+
+}
+
+.navbar{
+
+padding:15px 24px;
+
+}
+
+.profile-card{
+
+max-width:480px;
+
+}
+
+}
+
+/* ==========================
+   iPAD PRO
+========================== */
+
+@media (max-width:1024px){
+
+.navbar ul{
+
+gap:18px;
+
+}
+
+.logo{
+
+font-size:24px;
+
+}
+
+.hero{
+
+min-height:85vh;
+
+}
+
+.hero h1{
+
+font-size:3rem;
+
+}
+
+.games-grid{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+.leaderboard-table{
+
+overflow-x:auto;
+
+}
+
+.reward-section{
+
+padding:90px 30px;
+
+}
+
+}
+
+/* ==========================
+   TABLET
+========================== */
+
+@media (max-width:900px){
+
+.navbar{
+
+padding:15px 20px;
+
+}
+
+.hero h1{
+
+font-size:2.8rem;
+
+}
+
+.hero p{
+
+font-size:17px;
+
+}
+
+.games-grid{
+
+grid-template-columns:1fr 1fr;
+
+gap:22px;
+
+}
+
+.profile-card{
+
+max-width:100%;
+
+}
+
+.notification{
+
+right:20px;
+
+left:20px;
+
+min-width:auto;
+
+}
+
+  }
+/* ==========================================================
+   GAMEVERSE PRO RESPONSIVE
+   PART 3 / 4
+========================================================== */
+
+/* ==========================
+   MOBILE NAVIGATION
+========================== */
+
+@media (max-width:768px){
+
+.navbar{
+
+padding:14px 18px;
+
+}
+
+.logo{
+
+font-size:22px;
+
+}
+
+.menu-btn{
+
+display:block;
+
+font-size:30px;
+
+color:#fff;
+
+cursor:pointer;
+
+}
+
+.navbar ul{
+
+position:absolute;
+
+top:75px;
+
+left:0;
+
+width:100%;
+
+padding:20px;
+
+display:none;
+
+flex-direction:column;
+
+gap:18px;
+
+background:
+
+rgba(10,15,30,.96);
+
+backdrop-filter:blur(20px);
+
+border-top:
+
+1px solid rgba(255,255,255,.08);
+
+}
+
+.navbar ul.active{
+
+display:flex;
+
+animation:
+
+mobileMenu .35s ease;
+
+}
+
+.hero{
+
+min-height:auto;
+
+padding:120px 24px 80px;
+
+}
+
+.hero h1{
+
+font-size:2.5rem;
+
+line-height:1.15;
+
+}
+
+.hero p{
+
+font-size:16px;
+
+}
+
+.games-grid{
+
+grid-template-columns:1fr;
+
+gap:22px;
+
+}
+
+.game-card{
+
+min-height:auto;
+
+}
+
+.profile-card{
+
+width:100%;
+
+}
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width:600px){
+
+.hero h1{
+
+font-size:2.2rem;
+
+}
+
+.hero p{
+
+font-size:15px;
+
+}
+
+.hero button{
+
+width:100%;
+
+max-width:320px;
+
+}
+
+.leaderboard-table{
+
+overflow-x:auto;
+
+}
+
+.modal-content{
+
+width:100%;
+
+}
+
+}
+
+/* ==========================
+   SMALL MOBILE
+========================== */
+
+@media (max-width:480px){
+
+.hero{
+
+padding:110px 18px 70px;
+
+}
+
+.hero h1{
+
+font-size:2rem;
+
+}
+
+.games-grid{
+
+gap:18px;
+
+}
+
+.game-card{
+
+padding:22px;
+
+}
+
+.profile-card{
+
+padding:22px 18px;
+
+}
+
+#aiButton{
+
+width:60px;
+
+height:60px;
+
+font-size:24px;
+
+}
+
+}
+
+/* ==========================
+   FOLD DEVICES
+========================== */
+
+@media (max-width:320px){
+
+.hero h1{
+
+font-size:1.7rem;
+
+}
+
+.logo{
+
+font-size:18px;
+
+}
+
+.game-card{
+
+padding:18px;
+
+}
+
+}
+
+@keyframes mobileMenu{
+
+from{
+
+opacity:0;
+
+transform:translateY(-15px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+        }
+/* ==========================================================
+   GAMEVERSE PRO RESPONSIVE
+   PART 4 / 4
+========================================================== */
+
+/* ==========================
+   LANDSCAPE PHONES
+========================== */
+
+@media (orientation:landscape) and (max-height:600px){
+
+.hero{
+
+min-height:auto;
+
+padding:90px 6% 60px;
+
+}
+
+.hero h1{
+
+font-size:2.8rem;
+
+}
+
+.games-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+/* ==========================
+   SAFE AREA (iPhone)
+========================== */
+
+@supports (padding:max(0px)){
+
+body{
+
+padding-left:
+max(0px,env(safe-area-inset-left));
+
+padding-right:
+max(0px,env(safe-area-inset-right));
+
+padding-bottom:
+max(0px,env(safe-area-inset-bottom));
+
+}
+
+.navbar{
+
+padding-top:
+max(16px,env(safe-area-inset-top));
+
+}
+
+}
+
+/* ==========================
+   TOUCH DEVICES
+========================== */
+
+@media (hover:none){
+
+button:hover,
+.game-card:hover,
+.profile-card:hover,
+#aiButton:hover{
+
+transform:none;
+
+}
+
+}
+
+/* ==========================
+   REDUCED MOTION
+========================== */
+
+@media (prefers-reduced-motion:reduce){
+
+*,
+*::before,
+*::after{
+
+animation:none !important;
+
+transition:none !important;
+
+scroll-behavior:auto !important;
+
+}
+
+}
+
+/* ==========================
+   PERFORMANCE
+========================== */
+
+.hero,
+.game-card,
+.profile-card,
+.leaderboard-row,
+.modal-content{
+
+contain:layout style paint;
+
+}
+
+img{
+
+height:auto;
+
+display:block;
+
+max-width:100%;
+
+}
+
+/* ==========================
+   END RESPONSIVE
+========================== */

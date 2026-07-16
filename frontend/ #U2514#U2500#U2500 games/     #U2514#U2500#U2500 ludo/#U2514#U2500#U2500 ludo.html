@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GameVerse Pro - Ludo</title>
+
+<link rel="stylesheet" href="ludo.css">
+
+</head>
+
+<body>
+
+<div class="game-container">
+
+    <header class="top-bar">
+
+        <h1>🎲 Ludo Multiplayer</h1>
+
+        <div class="status">
+
+            <span id="turnText">
+                Your Turn
+            </span>
+
+        </div>
+
+    </header>
+
+    <!-- Board -->
+
+    <main>
+
+        <div id="board">
+
+            <canvas
+                id="boardCanvas"
+                width="700"
+                height="700">
+            </canvas>
+
+        </div>
+
+    </main>
+
+    <!-- Players -->
+
+    <section class="players">
+
+        <div class="player red">
+
+            🔴
+
+            <span id="redPlayer">
+
+                Player 1
+
+            </span>
+
+        </div>
+
+        <div class="player green">
+
+            🟢
+
+            <span id="greenPlayer">
+
+                Player 2
+
+            </span>
+
+        </div>
+
+        <div class="player yellow">
+
+            🟡
+
+            <span id="yellowPlayer">
+
+                Player 3
+
+            </span>
+
+        </div>
+
+        <div class="player blue">
+
+            🔵
+
+            <span id="bluePlayer">
+
+                Player 4
+
+            </span>
+
+        </div>
+
+    </section>
+
+    <!-- Dice -->
+
+    <section class="dice-panel">
+
+        <div
+            id="dice">
+
+            🎲
+
+        </div>
+
+        <button
+            id="rollDiceBtn">
+
+            Roll Dice
+
+        </button>
+
+    </section>
+
+    <!-- Score -->
+
+    <section class="score-panel">
+
+        <h3>
+
+            Coins
+
+        </h3>
+
+        <span id="coinCount">
+
+            0
+
+        </span>
+
+    </section>
+
+</div>
+
+<script src="../shared/gamebridge.js"></script>
+
+<script src="../shared/physics.js"></script>
+
+<script src="ludo.js"></script>
+
+</body>
+
+</html>

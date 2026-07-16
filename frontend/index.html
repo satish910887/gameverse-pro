@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GameVerse Pro</title>
+
+<meta name="description"
+content="Play Ludo, Chess, Runner, Survival and Puzzle online.">
+
+<link rel="icon"
+href="assets/images/logo.png">
+
+<!-- CSS -->
+
+<link rel="stylesheet"
+href="css/base.css">
+
+<link rel="stylesheet"
+href="css/navbar.css">
+
+<link rel="stylesheet"
+href="css/hero.css">
+
+<link rel="stylesheet"
+href="css/games.css">
+
+<link rel="stylesheet"
+href="css/leaderboard.css">
+
+<link rel="stylesheet"
+href="css/modals.css">
+
+<link rel="stylesheet"
+href="css/ui-panels.css">
+
+<link rel="stylesheet"
+href="css/responsive.css">
+
+</head>
+
+<body>
+
+<!-- Loading Screen -->
+
+<div id="loader">
+
+<h1>🎮 GameVerse Pro</h1>
+
+<p>Loading...</p>
+
+</div>
+
+<!-- Navigation -->
+
+<nav class="navbar">
+
+<div class="logo">
+
+🎮 GameVerse Pro
+
+</div>
+
+<ul>
+
+<li><a href="#home">Home</a></li>
+
+<li><a href="#games">Games</a></li>
+
+<li><a href="#leaderboard">Leaderboard</a></li>
+
+<li><a href="#profile">Profile</a></li>
+
+</ul>
+
+<div>
+
+<button id="loginBtn">
+
+Login
+
+</button>
+
+</div>
+
+</nav>
+
+<!-- Hero -->
+
+<section class="hero" id="home">
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content container">
+
+    <span class="hero-badge">
+      🔥 India's Next Generation Gaming Platform
+    </span>
+
+    <h1>
+      Level Up Your
+      <span class="gradient">Gaming Experience</span>
+    </h1>
+
+    <p>
+      Play multiplayer games, climb global leaderboards,
+      unlock achievements, earn rewards and compete with
+      players around the world.
+    </p>
+
+    <div class="hero-buttons">
+
+      <button class="btn-primary">
+        🎮 Play Now
+      </button>
+
+      <button class="btn-secondary">
+        ▶ Watch Trailer
+      </button>
+
+    </div>
+
+    <div class="hero-stats">
+
+      <div>
+        <h2>25K+</h2>
+        <span>Players</span>
+      </div>
+
+      <div>
+        <h2>150+</h2>
+        <span>Tournaments</span>
+      </div>
+
+      <div>
+        <h2>30+</h2>
+        <span>Games</span>
+      </div>
+
+      <div>
+        <h2>99.9%</h2>
+        <span>Uptime</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Games -->
+
+<section
+id="games">
+
+<h2>
+
+Popular Games
+
+</h2>
+
+<div
+class="games-grid">
+
+<!-- Ludo -->
+
+<div
+class="game-card"
+onclick="launchGame('ludo')">
+
+<h3>
+
+🎲 Ludo
+
+</h3>
+
+<p>
+
+Classic Multiplayer Game
+
+</p>
+
+</div>
+
+<!-- Chess -->
+
+<div
+class="game-card"
+onclick="launchGame('chess')">
+
+<h3>
+
+♟ Chess
+
+</h3>
+
+<p>
+
+Challenge Players
+
+</p>
+
+</div>
+
+<!-- Runner -->
+
+<div
+class="game-card"
+onclick="launchGame('runner')">
+
+<h3>
+
+🏃 Runner
+
+</h3>
+
+<p>
+
+Run Forever
+
+</p>
+
+</div>
+
+<!-- Survival -->
+
+<div
+class="game-card"
+onclick="launchGame('survival')">
+
+<h3>
+
+🔥 Survival
+
+</h3>
+
+<p>
+
+Stay Alive
+
+</p>
+
+</div>
+
+<!-- Puzzle -->
+
+<div
+class="game-card"
+onclick="launchGame('puzzle')">
+
+<h3>
+
+🧩 Puzzle
+
+</h3>
+
+<p>
+
+Train Your Brain
+
+</p>
+
+</div>
+
+</div>
+
+  </section><!-- ===========================
+     Leaderboard Section
+=========================== -->
+
+<section id="leaderboard" class="leaderboard-section">
+
+    <h2>🏆 Global Leaderboard</h2>
+
+    <div class="leaderboard-table">
+
+        <div class="leaderboard-header">
+            <span>Rank</span>
+            <span>Player</span>
+            <span>Level</span>
+            <span>Score</span>
+        </div>
+
+        <div id="leaderboardList">
+
+            <div class="leaderboard-row">
+                <span>🥇 1</span>
+                <span>Loading...</span>
+                <span>--</span>
+                <span>0</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===========================
+     Player Profile
+=========================== -->
+
+<section id="profile" class="profile-section">
+
+    <h2>👤 My Profile</h2>
+
+    <div class="profile-card">
+
+        <img
+            id="profileAvatar"
+            src="assets/images/default-avatar.png"
+            alt="Avatar">
+
+        <h3 id="playerName">
+            Guest Player
+        </h3>
+
+        <p>
+            Level:
+            <span id="playerLevel">1</span>
+        </p>
+
+        <p>
+            XP:
+            <span id="playerXP">0</span>
+        </p>
+
+        <p>
+            Coins:
+            <span id="playerCoins">500</span>
+        </p>
+
+        <p>
+            Gems:
+            <span id="playerGems">50</span>
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ===========================
+     Daily Reward
+=========================== -->
+
+<section class="reward-section">
+
+    <h2>🎁 Daily Reward</h2>
+
+    <button id="dailyRewardBtn">
+
+        Claim Reward
+
+    </button>
+
+</section>
+
+<!-- ===========================
+     AI Assistant
+=========================== -->
+
+<div id="aiAssistant">
+
+    <button id="aiButton">
+
+        🤖 AI
+
+    </button>
+
+</div>
+
+<!-- ===========================
+     Login Modal
+=========================== -->
+
+<div
+id="loginModal"
+class="modal">
+
+<div class="modal-content">
+
+<h2>
+
+Login
+
+</h2>
+
+<input
+type="email"
+id="loginEmail"
+placeholder="Email">
+
+<input
+type="password"
+id="loginPassword"
+placeholder="Password">
+
+<button
+id="loginSubmit">
+
+Login
+
+</button>
+
+<hr>
+
+<button
+id="openSignup">
+
+Create Account
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ===========================
+     Signup Modal
+=========================== -->
+
+<div
+id="signupModal"
+class="modal">
+
+<div class="modal-content">
+
+<h2>
+
+Create Account
+
+</h2>
+
+<input
+type="text"
+id="signupName"
+placeholder="Name">
+
+<input
+type="email"
+id="signupEmail"
+placeholder="Email">
+
+<input
+type="password"
+id="signupPassword"
+placeholder="Password">
+
+<button
+id="signupSubmit">
+
+Register
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ===========================
+     Footer
+=========================== -->
+
+<footer>
+
+<p>
+
+© 2026 GameVerse Pro | <a href="legal.html">Legal</a> | <a href="legal.html#privacy">Privacy</a> | <a href="legal.html#fairplay">Fair Play</a>
+
+</p>
+
+<p>
+
+Made with ❤️ by Satish
+
+</p>
+
+</footer>
+
+<!-- JavaScript -->
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/user.js"></script>
+<script src="js/leaderboard.js"></script>
+<script src="js/socket.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/anti-cheat.js"></script>
+<script src="js/game-launcher.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/ai-assistant.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+  </html>

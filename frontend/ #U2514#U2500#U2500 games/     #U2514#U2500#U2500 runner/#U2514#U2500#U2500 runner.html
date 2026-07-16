@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GameVerse Pro - Runner</title>
+
+<link rel="stylesheet" href="runner.css">
+
+</head>
+
+<body>
+
+<div class="game-container">
+
+<header class="top-bar">
+
+<h1>🏃 Endless Runner</h1>
+
+<div id="gameStatus">
+
+Ready
+
+</div>
+
+</header>
+
+<main>
+
+<canvas
+id="gameCanvas"
+width="900"
+height="450">
+</canvas>
+
+</main>
+
+<section class="hud">
+
+<div>
+
+Score
+
+<span id="score">
+
+0
+
+</span>
+
+</div>
+
+<div>
+
+Coins
+
+<span id="coins">
+
+0
+
+</span>
+
+</div>
+
+<div>
+
+Distance
+
+<span id="distance">
+
+0m
+
+</span>
+
+</div>
+
+</section>
+
+<section class="controls">
+
+<button id="startBtn">
+
+▶ Start
+
+</button>
+
+<button id="restartBtn">
+
+🔄 Restart
+
+</button>
+
+<button id="exitBtn">
+
+❌ Exit
+
+</button>
+
+</section>
+
+<div class="instructions">
+
+<p>
+
+⌨️ Press <strong>SPACE</strong> or <strong>↑</strong> to Jump
+
+</p>
+
+<p>
+
+📱 On mobile, tap anywhere on the screen.
+
+</p>
+
+</div>
+
+</div>
+
+<script src="../shared/gamebridge.js"></script>
+
+<script src="../shared/physics.js"></script>
+
+<script src="runner.js"></script>
+
+</body>
+
+</html>

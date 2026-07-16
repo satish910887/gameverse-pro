@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+
+  app:
+    container_name: gameverse-app
+
+    build: .
+
+    restart: unless-stopped
+
+    ports:
+      - "5000:5000"
+
+    env_file:
+      - .env
+
+    environment:
+      NODE_ENV: production
+
+    depends_on:
+      - mongodb
+
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+
+    working_dir: /usr/src/app
+
+    command: npm start
+
+    networks:
+      - gameverse-network
+
+  mongodb:
+    image: mongo:7
+
+    container_name: gameverse-mongodb
+
+    restart: unless-stopped
+
+    ports:
+      - "27017:27017"
+
+    environment:
+      MONGO_INITDB_DATABASE: gameverse
+
+    volumes:
+      - mongodb-data:/data/db
+
+    networks:
+      - gameverse-network
+
+networks:
+
+  gameverse-network:
+    driver: bridge
+
+volumes:
+
+  mongodb-data:
