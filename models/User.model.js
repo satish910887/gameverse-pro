@@ -3,7 +3,7 @@ const bcrypt   = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
   name:     { type: String, required: true, trim: true, minlength: 2, maxlength: 50 },
-  email:    { unique: true, trim: true },
+  email: { type: String, unique: true, sparse: true, trim: true, lowercase: true },
   mobile:   { type: String, unique: true, sparse: true },
   // FIX: select:false so password never accidentally returned in queries
   password: { type: String, minlength: 8, select: false },
