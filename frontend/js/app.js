@@ -419,17 +419,11 @@ playNotificationSound();
 // ======================================
 
 function launchGame(game){
-
 notify("Launching "+game+"...");
-
 setTimeout(()=>{
-
 window.location.href=
-
-"games/"+game+".html";
-
+"games/"+game+"/"+game+".html";
 },700);
-
 }
 
 // ======================================
