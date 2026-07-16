@@ -77,3 +77,24 @@ section { padding: var(--sp-3xl) var(--sp-xl); }
 }
 #loader h1 { font-family:var(--font-display); font-size:2rem; margin-bottom:16px; }
 #loader p  { color:var(--c-text-muted); }
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #0a0e1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s;
+}
+
+#loader h1 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+#loader p {
+  color: #6B7280;
+}
