@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Zombie Surge</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e1a;color:#e8edf5;font-family:Inter,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:16px}
+.header{display:flex;gap:12px;margin-bottom:12px;background:#111827;padding:10px 20px;border-radius:12px;flex-wrap:wrap;justify-content:center}
+.score-box{font-size:.82rem}span{color:#00E676;font-weight:700}
+.canvas-wrap{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 0 30px rgba(255,71,87,.3)}
+canvas{display:block}
+.overlay{position:absolute;inset:0;background:rgba(10,14,26,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.overlay h2{font-size:1.6rem}
+.overlay p{color:#6B7280;text-align:center;max-width:280px;font-size:.88rem}
+.overlay button{background:linear-gradient(135deg,#FF4757,#7C3AED);color:#fff;border:none;padding:12px 30px;border-radius:20px;font-weight:700;cursor:pointer}
+.shop{position:absolute;inset:0;background:rgba(10,14,26,.95);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.shop h3{color:#FFD700;font-size:1.2rem}
+.shop button{background:linear-gradient(135deg,#7C3AED,#00F5FF);color:#fff;border:none;padding:10px 24px;border-radius:20px;font-weight:700;cursor:pointer;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="score-box">⚔️ Zombie Surge</div>
+  <div class="score-box">❤️ <span id="hp">100</span></div>
+  <div class="score-box">🌊 Wave <span id="wave">1</span></div>
+  <div class="score-box">💀 <span id="kills">0</span></div>
+  <div class="score-box">🪙 <span id="coins">0</span></div>
+</div>
+<div class="canvas-wrap">
+  <canvas id="c"></canvas>
+  <div id="overlay" class="overlay">
+    <h2>⚔️ Zombie Surge</h2>
+    <p>Survive zombie waves! WASD/Arrow keys to move. Auto-shoots!</p>
+    <button onclick="startGame()">▶ Start Survival</button>
+  </div>
+  <div id="shop" class="shop">
+    <h3>🛒 Wave Clear!</h3>
+    <button onclick="buyUpgrade('speed')">⚡ Speed +1 (50🪙)</button>
+    <button onclick="buyUpgrade('hp')">❤️ Heal +30 (60🪙)</button>
+    <button onclick="closeShop()">▶ Next Wave</button>
+  </div>
+</div>
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const W=360,H=280;
+canvas.width=W;canvas.height=H;
+
+let running=false,wave=1,kills=0,coins=0,hp=100,animId,frame=0,shootTimer=0;
+let player,zombies,bullets,particles,keys={};
+let pSpeed=2.5,bulletDmg=20;
+
+function initState(){
+  player={x:W/2,y:H/2,r:14,speed:pSpeed};
+  zombies=[];bullets=[];particles=[];
+}
+
+function spawnWave(w){
+  const count=4+w*3;
+  for(let i=0;i<count;i++){
+    const side=Math.floor(Math.random()*4);
+    let x,y;
+    if(side===0){x=Math.random()*W;y=-20;}
+    else if(side===1){x=W+20;y=Math.random()*H;}
+    else if(side===2){x=Math.random()*W;y=H+20;}
+    else{x=-20;y=Math.random()*H;}
+    zombies.push({x,y,r:12,hp:25+w*8,maxHp:25+w*8,speed:.7+w*.08+Math.random()*.4});
+  }
+}
+
+function dist(a,b){return Math.sqrt((a.x-b.x)**2+(a.y-b.y)**2);}
+
+function loop(){
+  if(!running)return;
+  animId=requestAnimationFrame(loop);
+  frame++;
+  ctx.fillStyle='#070b15';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,.03)';ctx.lineWidth=1;
+  for(let i=0;i<W;i+=40){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,H);ctx.stroke();}
+  for(let i=0;i<H;i+=40){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(W,i);ctx.stroke();}
+
+  if((keys['ArrowLeft']||keys['a'])&&player.x-player.r>0)player.x-=player.speed;
+  if((keys['ArrowRight']||keys['d'])&&player.x+player.r<W)player.x+=player.speed;
+  if((keys['ArrowUp']||keys['w'])&&player.y-player.r>0)player.y-=player.speed;
+  if((keys['ArrowDown']||keys['s'])&&player.y+player.r<H)player.y+=player.speed;
+
+  shootTimer++;
+  if(shootTimer>=18&&zombies.length>0){
+    shootTimer=0;
+    const nearest=zombies.reduce((a,z)=>dist(player,z)<dist(player,a)?z:a);
+    const angle=Math.atan2(nearest.y-player.y,nearest.x-player.x);
+    bullets.push({x:player.x,y:player.y,vx:Math.cos(angle)*8,vy:Math.sin(angle)*8,r:4});
+  }
+
+  bullets=bullets.filter(b=>b.x>-10&&b.x<W+10&&b.y>-10&&b.y<H+10);
+  bullets.forEach(b=>{
+    b.x+=b.vx;b.y+=b.vy;
+    ctx.shadowBlur=8;ctx.shadowColor='#FFD700';ctx.fillStyle='#FFD700';
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+    zombies.forEach(z=>{if(dist(b,z)<z.r+b.r){z.hp-=bulletDmg;b.dead=true;for(let i=0;i<4;i++)particles.push({x:z.x,y:z.y,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5,life:20,color:'#00E676'});}});
+  });
+  bullets=bullets.filter(b=>!b.dead);
+
+  const before=zombies.length;
+  zombies=zombies.filter(z=>z.hp>0);
+  const killed=before-zombies.length;
+  if(killed>0){kills+=killed;coins+=killed*10;document.getElementById('kills').textContent=kills;document.getElementById('coins').textContent=coins;}
+
+  zombies.forEach(z=>{
+    const angle=Math.atan2(player.y-z.y,player.x-z.x);
+    z.x+=Math.cos(angle)*z.speed;z.y+=Math.sin(angle)*z.speed;
+    if(dist(z,player)<z.r+player.r)hp=Math.max(0,hp-.2);
+    ctx.shadowBlur=8;ctx.shadowColor='#00E676';
+    ctx.fillStyle='#1a3a1a';ctx.beginPath();ctx.arc(z.x,z.y,z.r,0,Math.PI*2);ctx.fill();
+    ctx.font='bold 14px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🧟',z.x,z.y);
+    ctx.shadowBlur=0;
+    ctx.fillStyle='#333';ctx.fillRect(z.x-z.r,z.y-z.r-8,z.r*2,5);
+    ctx.fillStyle='#00E676';ctx.fillRect(z.x-z.r,z.y-z.r-8,z.r*2*(z.hp/z.maxHp),5);
+  });
+
+  particles=particles.filter(p=>p.life>0);
+  particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life--;ctx.globalAlpha=p.life/20;ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,3,3);});
+  ctx.globalAlpha=1;
+
+  ctx.shadowBlur=16;ctx.shadowColor='#7C3AED';
+  ctx.fillStyle='#7C3AED';ctx.beginPath();ctx.arc(player.x,player.y,player.r,0,Math.PI*2);ctx.fill();
+  ctx.font='bold 18px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🧑‍🚀',player.x,player.y);
+  ctx.shadowBlur=0;
+
+  document.getElementById('hp').textContent=Math.ceil(hp);
+  document.getElementById('wave').textContent=wave;
+
+  if(zombies.length===0&&running)openShop();
+  if(hp<=0)endGame();
+}
+
+function openShop(){running=false;document.getElementById('shop').style.display='flex';}
+function closeShop(){document.getElementById('shop').style.display='none';wave++;spawnWave(wave);running=true;loop();}
+function buyUpgrade(t){
+  if(t==='speed'&&coins>=50){coins-=50;player.speed+=.5;}
+  else if(t==='hp'&&coins>=60){coins-=60;hp=Math.min(hp+30,100);}
+  document.getElementById('coins').textContent=coins;
+}
+
+function startGame(){
+  hp=100;kills=0;coins=0;wave=1;frame=0;shootTimer=0;
+  initState();spawnWave(1);
+  document.getElementById('overlay').style.display='none';
+  running=true;loop();
+}
+
+function endGame(){
+  running=false;cancelAnimationFrame(animId);
+  const ov=document.getElementById('overlay');
+  ov.querySelector('h2').textContent='💀 You Died!';
+  ov.querySelector('p').textContent=`Wave ${wave} | ${kills} kills | Score: ${kills*100+wave*500}`;
+  ov.querySelector('button').textContent='▶ Play Again';
+  ov.querySelector('button').onclick=startGame;
+  ov.style.display='flex';
+  window.parent?.postMessage({type:'GAME_OVER',score:kills*100+wave*500,result:wave>=5?'win':'loss'},'*');
+}
+
+document.addEventListener('keydown',e=>keys[e.key]=true);
+document.addEventListener('keyup',e=>keys[e.key]=false);
+</script>
+</body>
+</html>
